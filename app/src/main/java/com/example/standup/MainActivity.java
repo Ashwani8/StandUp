@@ -33,9 +33,14 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String toastMessage;
                 if(isChecked){
+                    // deliver the notification
+                    deliverNotification(MainActivity.this);
                     // Set the toast message for the "on" case
                     toastMessage = getString(R.string.stand_up_on);
                 }else {
+                    //Cancel notification if the alarm is turned off
+                    mNotificationManager.cancelAll();
+
                     // set the toast message for the "off" case
                     toastMessage = getString(R.string.stand_up_off);
                 }
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         });
         // instantiate notification manager
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
 
     }
 
@@ -90,5 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL);
 
+        mNotificationManager.notify(NOTIFICATION_ID,builder.build());
     }
 }

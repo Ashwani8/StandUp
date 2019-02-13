@@ -1,17 +1,24 @@
 package com.example.standup;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.NotificationManager;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+    private NotificationManager mNotificationManager;
+    private static final int NOTIFICATION_ID = 0;
+    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Toggle switch
         ToggleButton alarmToggle = findViewById(R.id.alarmToggle);
 
@@ -30,5 +37,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,toastMessage,Toast.LENGTH_SHORT).show();
             }
         });
+        // Create a notification manager object.
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
     }
 }

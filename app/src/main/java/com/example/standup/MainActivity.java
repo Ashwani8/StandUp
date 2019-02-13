@@ -2,7 +2,9 @@ package com.example.standup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -37,8 +39,30 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,toastMessage,Toast.LENGTH_SHORT).show();
             }
         });
+        // instantiate notification manager
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+    }
+
+    /**
+     * Creates a Notification channel, for OREO and higher.
+     */
+    public void createNotificationChannel(){
+
         // Create a notification manager object.
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+       // notification channels are only available in Oreo or higher
+        // therefore a check SDK version
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            // Create a notification with all the parameters
+        NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
+                "Stand up notification", NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.enableLights(true);
+        notificationChannel.setLightColor(Color.RED);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setDescription("Notifies every 15 minutes to stand up and walk");
+        mNotificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 }

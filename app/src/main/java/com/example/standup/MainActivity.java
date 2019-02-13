@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         // instantiate notification manager
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-
+        // Create the notification channel.
+        createNotificationChannel();
     }
 
     /**

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 String toastMessage;
                 if(isChecked){
                     // deliver the notification
-                    deliverNotification(MainActivity.this);
+//                    deliverNotification(MainActivity.this); // moved to alarmReceiver
                     // Set the toast message for the "on" case
                     toastMessage = getString(R.string.stand_up_on);
                 }else {
@@ -77,26 +77,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * deliver notification method
-     * @param context activity context
-     */
-    private void deliverNotification(Context context){
-        // Set up the pending intent that is delivered
-        Intent contentIntent = new Intent(context, MainActivity.class);
-        PendingIntent contentPendingIntent = PendingIntent.getActivity(context,
-                NOTIFICATION_ID,contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Build the notification with all of the parameters
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,PRIMARY_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_stand_up)
-                .setContentTitle(getString(R.string.stand_up_alert))
-                .setContentText(getString(R.string.notification_text))
-                .setContentIntent(contentPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL);
-
-        mNotificationManager.notify(NOTIFICATION_ID,builder.build());
-    }
+//    /**
+//     * deliver notification method
+//     * @param context activity context
+//     */
+//    private void deliverNotification(Context context){
+//        // Set up the pending intent that is delivered
+//        Intent contentIntent = new Intent(context, MainActivity.class);
+//        PendingIntent contentPendingIntent = PendingIntent.getActivity(context,
+//                NOTIFICATION_ID,contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        // Build the notification with all of the parameters
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,PRIMARY_CHANNEL_ID)
+//                .setSmallIcon(R.drawable.ic_stand_up)
+//                .setContentTitle(getString(R.string.stand_up_alert))
+//                .setContentText(getString(R.string.notification_text))
+//                .setContentIntent(contentPendingIntent)
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                .setAutoCancel(true)
+//                .setDefaults(NotificationCompat.DEFAULT_ALL);
+//
+//        mNotificationManager.notify(NOTIFICATION_ID,builder.build());
+//    }
 }

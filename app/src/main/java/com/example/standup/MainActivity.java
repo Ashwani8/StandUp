@@ -3,6 +3,7 @@ package com.example.standup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -24,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // initialize the Alarm manager
+        final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        // Set up the Notification Broadcast Intent.
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(this,
+        final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(this,
                 NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Toggle switch
         ToggleButton alarmToggle = findViewById(R.id.alarmToggle);
@@ -35,14 +40,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String toastMessage;
+
+
                 if(isChecked){
                     // deliver the notification
 //                    deliverNotification(MainActivity.this); // moved to alarmReceiver
+
+
+                    long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+                    long triggerTime = SystemClock.elapsedRealtime() + repeatInterval;
+                    // If the Toggle is turned on, set the repeating alarm with
+                    // a 15 minute interval.
+                    if (alarmManager != null){
+                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                triggerTime, repeatInterval, notifyPendingIntent);
+                    }
                     // Set the toast message for the "on" case
                     toastMessage = getString(R.string.stand_up_on);
+
                 }else {
                     //Cancel notification if the alarm is turned off
                     mNotificationManager.cancelAll();
+                    if(alarmManager != null){
+                        alarmManager.cancel(notifyPendingIntent);
+                    }
 
                     // set the toast message for the "off" case
                     toastMessage = getString(R.string.stand_up_off);

@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent notifyIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(this,
+                NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Toggle switch
         ToggleButton alarmToggle = findViewById(R.id.alarmToggle);
 

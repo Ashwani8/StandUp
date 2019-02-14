@@ -26,16 +26,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Toggle switch
+        ToggleButton alarmToggle = findViewById(R.id.alarmToggle);
         // initialize the Alarm manager
         final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+
         // Set up the Notification Broadcast Intent.
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
+        boolean alarmUp = (PendingIntent.getBroadcast(this,
+                NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_NO_CREATE) != null); // variable true
+        // the NO-Create returns null if unless a pending intent with a matching intent exists
+            alarmToggle.setChecked(alarmUp); // to ensure that toggle is always on if the alarm is set
+        // and off otherwise.
         final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(this,
                 NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Toggle switch
-        ToggleButton alarmToggle = findViewById(R.id.alarmToggle);
 
+    // set onclick listener on toggle
         alarmToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
